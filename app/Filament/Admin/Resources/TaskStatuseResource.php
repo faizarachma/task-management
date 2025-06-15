@@ -36,18 +36,14 @@ class TaskStatuseResource extends Resource
                             ->columnSpanFull()
                             ->unique(ignoreRecord: true),
 
-                        Forms\Components\Textarea::make('description')
-                            ->label('Description')
-                            ->maxLength(500)
-                            ->columnSpanFull()
-                            ->rows(3),
+
 
                         ColorPicker::make('color')
                             ->label('Status Color')
                             ->required()
-                            ->default('#6b7280') // gray
+                            ->default('#6b7280')
                             ->rgb(),
-                            // hapus ->width(100)
+
 
                         Forms\Components\Toggle::make('is_default')
                             ->label('Default Status')

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\SeverityResource\Pages;
-use App\Filament\Resources\SeverityResource\RelationManagers;
+use App\Filament\Admin\Resources\SeverityResource\Pages;
+use App\Filament\Admin\Resources\SeverityResource\RelationManagers;
 use App\Models\Severity;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\ColorPicker;
 
 class SeverityResource extends Resource
 {
@@ -33,22 +34,12 @@ class SeverityResource extends Resource
                     ->maxLength(255)
                     ->columnSpanFull(),
 
-                Forms\Components\Select::make('color')
+                     ColorPicker::make('color')
                     ->label('Warna')
-                    ->options([
-                        'red' => 'Merah',
-                        'green' => 'Hijau',
-                        'blue' => 'Biru',
-                        'yellow' => 'Kuning',
-                        'purple' => 'Ungu',
-                        'gray' => 'Abu-abu',
-                    ])
-                    ->default('gray')
                     ->required()
-                    ->native(false) // Untuk tampilan yang lebih baik
+                    ->default('#6b7280')  // warna default abu-abu
                     ->columnSpan(1),
-
-                Forms\Components\TextInput::make('priority')
+                    Forms\Components\TextInput::make('priority')
                     ->label('Prioritas (1-10)')
                     ->numeric()
                     ->required()
@@ -56,6 +47,8 @@ class SeverityResource extends Resource
                     ->maxValue(10)
                     ->default(1)
                     ->columnSpan(1),
+
+
             ])
             ->columns(2); // Membagi form menjadi 2 kolom
     }
@@ -121,8 +114,7 @@ class SeverityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSeverities::route('/'),
-            // Hapus rute create dan edit karena menggunakan modal
+            'index' => \App\Filament\Admin\Resources\SeverityResource\Pages\ListSeverities::route('/'),
         ];
     }
 }

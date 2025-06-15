@@ -9,6 +9,8 @@ class Severity extends Model
     protected $fillable = [
         'name',
         'description',
+        'color',
+        'priority',
     ];
 
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\SeverityResource\Pages;
+namespace App\Filament\Admin\Resources\SeverityResource\Pages;
 
-use App\Filament\Resources\SeverityResource;
+use App\Filament\Admin\Resources\SeverityResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
