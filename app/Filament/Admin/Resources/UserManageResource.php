@@ -190,6 +190,6 @@ class UserManageResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('id', '!=', Auth::id()); // Menyembunyikan akun yang sedang login
+            ->where('id', '!=', Auth::id());
     }
 }

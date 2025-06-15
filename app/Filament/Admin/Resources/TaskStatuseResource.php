@@ -2,7 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\TaskStatuseResource\Pages\ListTaskStatuses; // import halaman list
+use App\Filament\Admin\Resources\TaskStatuseResource\Pages\ListTaskStatuses;
 use App\Models\TaskStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,7 +19,7 @@ class TaskStatuseResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?string $navigationLabel = 'Task Statuses';
     protected static ?string $modelLabel = 'Task Status';
-    protected static ?string $navigationGroup = 'Setting';
+    protected static ?string $navigationGroup = 'Task Attributes';
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form

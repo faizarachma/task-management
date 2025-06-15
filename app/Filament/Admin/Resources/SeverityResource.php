@@ -18,10 +18,10 @@ class SeverityResource extends Resource
 {
     protected static ?string $model = Severity::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle'; // Icon lebih relevan
-    protected static ?string $navigationLabel = 'Severity'; // Label lebih deskriptif
+    protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
+    protected static ?string $navigationLabel = 'Severity';
     protected static ?string $modelLabel = 'Severity Management';
-    protected static ?string $navigationGroup = 'Setting'; // Grup navigasi untuk konsistensi
+    protected static ?string $navigationGroup = 'Task Attributes';
     protected static ?string $slug = 'Severity Management';
 
     public static function form(Form $form): Form
@@ -37,7 +37,7 @@ class SeverityResource extends Resource
                      ColorPicker::make('color')
                     ->label('Warna')
                     ->required()
-                    ->default('#6b7280')  // warna default abu-abu
+                    ->default('#6b7280')
                     ->columnSpan(1),
                     Forms\Components\TextInput::make('priority')
                     ->label('Prioritas (1-10)')
@@ -50,7 +50,7 @@ class SeverityResource extends Resource
 
 
             ])
-            ->columns(2); // Membagi form menjadi 2 kolom
+            ->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -106,7 +106,7 @@ class SeverityResource extends Resource
             //         ->label('Tambah Baru')
             //         ->icon('heroicon-o-plus'),
             // ])
-            ->defaultSort('priority', 'asc') // Urutkan berdasarkan prioritas
+            ->defaultSort('priority', 'asc')
             ->emptyStateHeading('Belum ada Tingkat Keparahan')
             ->emptyStateDescription('Klik tombol "Tambah Baru" untuk membuat yang pertama');
     }
