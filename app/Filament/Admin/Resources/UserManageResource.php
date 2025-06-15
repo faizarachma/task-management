@@ -10,6 +10,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
+use Filament\Resources\Pages\Page;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserManageResource extends Resource
 {
@@ -180,5 +184,12 @@ class UserManageResource extends Resource
         $enum = array_map(fn ($value) => trim($value, "'"), explode(',', $matches[1]));
 
         return array_combine($enum, array_map('ucfirst', $enum));
+    }
+
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('id', '!=', Auth::id()); // Menyembunyikan akun yang sedang login
     }
 }

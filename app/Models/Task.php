@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\TaskStatuse;
+use App\Models\TaskStatus;
 use App\Models\Severity;
 use App\Models\User;
 
@@ -17,9 +17,9 @@ class Task extends Model
         'user_id',
     ];
 
-    public function taskStatuse()
+    public function taskStatus()
     {
-        return $this->belongsTo(TaskStatuse::class);
+        return $this->belongsTo(TaskStatus::class);
     }
     public function severity()
     {

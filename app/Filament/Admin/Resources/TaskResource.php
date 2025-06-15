@@ -53,7 +53,7 @@ class TaskResource extends Resource
 
                         Forms\Components\Select::make('task_status_id')
                             ->label('Task Status')
-                            ->relationship('taskStatuse', 'name')
+                            ->relationship('taskStatus', 'name')
                             ->required()
                             ->native(false)
                             ->preload(),
@@ -91,7 +91,7 @@ class TaskResource extends Resource
                         default => 'primary',
                     }),
 
-                Tables\Columns\TextColumn::make('taskStatuse.name')
+                Tables\Columns\TextColumn::make('taskStatus.name')
                     ->label('Status')
                     ->sortable()
                     ->badge()
@@ -122,7 +122,7 @@ class TaskResource extends Resource
 
                 Tables\Filters\SelectFilter::make('task_status_id')
                     ->label('Status')
-                    ->relationship('taskStatuse', 'name')
+                    ->relationship('taskStatus', 'name')
                     ->multiple()
                     ->preload(),
 
@@ -137,12 +137,12 @@ class TaskResource extends Resource
                 Tables\Actions\ViewAction::make()
                     ->label('View')
                     ->modalWidth('xl')
-                    ->slideOver(),
+                    ->modal(),
 
                 Tables\Actions\EditAction::make()
                     ->label('Edit')
                     ->modalWidth('xl')
-                    ->slideOver(),
+                    ->modal(),
 
                 Tables\Actions\DeleteAction::make()
                     ->label('Delete'),
@@ -160,7 +160,7 @@ class TaskResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Create Task')
                     ->modalWidth('xl')
-                    ->slideOver(),
+                    ->modal(),
             ]);
     }
 

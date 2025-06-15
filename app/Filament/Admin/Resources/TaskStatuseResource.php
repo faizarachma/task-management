@@ -3,7 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\TaskStatuseResource\Pages\ListTaskStatuses; // import halaman list
-use App\Models\TaskStatuse;
+use App\Models\TaskStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class TaskStatuseResource extends Resource
 {
-    protected static ?string $model = TaskStatuse::class;
+    protected static ?string $model = TaskStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?string $navigationLabel = 'Task Statuses';
@@ -96,17 +96,17 @@ class TaskStatuseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                    ->label('')
+                    ->label('View')
                     ->icon('heroicon-o-eye')
                     ->modalWidth('sm'),
 
                 Tables\Actions\EditAction::make()
-                    ->label('')
+                    ->label('Edit')
                     ->icon('heroicon-o-pencil')
                     ->modalWidth('sm'),
 
                 Tables\Actions\DeleteAction::make()
-                    ->label('')
+                    ->label('Delete')
                     ->icon('heroicon-o-trash')
                     ->successNotificationTitle('Status deleted successfully'),
             ])
