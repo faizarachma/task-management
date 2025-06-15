@@ -17,6 +17,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Admin\Resources\ProfileResource;
+
 
 
 class AdminPanelProvider extends PanelProvider
@@ -35,6 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
                 \App\Filament\Admin\Pages\Dashboard::class,
+
 
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
@@ -57,4 +60,14 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
+    protected function registerNavigationItems(): void
+{
+    \Filament\Navigation\NavigationItem::make('Profile')
+        ->url(fn (): string => ProfileResource::getUrl('edit', ['record' => auth()->id()]))
+        ->icon('heroicon-o-user-circle')
+        ->group('Account')
+        ->sort(1)
+        ->register();
+}
 }
