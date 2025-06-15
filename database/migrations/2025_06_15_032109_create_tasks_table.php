@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
+            $table->timestamp('deadline')->default(now()->addDays(7));
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('severity_id')->constrained('severities')->onDelete('cascade');
             $table->foreignId('task_status_id')->constrained()->onDelete('cascade');

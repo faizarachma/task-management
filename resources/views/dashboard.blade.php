@@ -3,39 +3,77 @@
 
 
         <!-- Statistik Utama -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Total Pengguna -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <!-- Total Tugas -->
             <x-filament::card>
                 <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-500">Total Pengguna</h3>
-                    <p class="text-3xl font-bold mt-2">1,248</p>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-500">Total Task</h3>
+                        <x-heroicon-s-clipboard-document-list class="w-6 h-6 text-primary-500" />
+                    </div>
+                    <p class="text-3xl font-bold mt-2">{{ \App\Models\Task::count() }}</p>
                     <div class="flex items-center text-sm text-success-500 mt-2">
                         <x-heroicon-s-arrow-trending-up class="w-4 h-4 mr-1" />
-                        <span>12% dari bulan lalu</span>
+                        <span>
+                            {{ \App\Models\Task::whereDate('created_at', now()->toDateString())->count() }} tugas baru
+                            hari ini
+                        </span>
                     </div>
                 </div>
             </x-filament::card>
 
-            <!-- Total Pesanan -->
+            <!-- Tugas Selesai -->
             <x-filament::card>
                 <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-500">Total Pesanan</h3>
-                    <p class="text-3xl font-bold mt-2">356</p>
-                    <div class="flex items-center text-sm text-success-500 mt-2">
-                        <x-heroicon-s-arrow-trending-up class="w-4 h-4 mr-1" />
-                        <span>8% dari bulan lalu</span>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-500">Finish Task</h3>
+                        <x-heroicon-s-check-circle class="w-6 h-6 text-success-500" />
+                    </div>
+                    <p class="text-3xl font-bold mt-2">{{ \App\Models\Task::where('task_status_id')->count() }}
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500 mt-2">
+                        <span>
+                            {{ \App\Models\Task::count() > 0
+                                ? round((\App\Models\Task::where('task_status_id', 'complete')->count() / \App\Models\Task::count()) * 100)
+                                : 0 }}%
+                            tugas selesai
+                        </span>
                     </div>
                 </div>
             </x-filament::card>
 
-            <!-- Pendapatan Bulan Ini -->
+            <!-- Tugas Berjalan -->
             <x-filament::card>
                 <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-500">Pendapatan Bulan Ini</h3>
-                    <p class="text-3xl font-bold mt-2">Rp 48.750.000</p>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-500">Progress</h3>
+                        <x-heroicon-s-arrow-path class="w-6 h-6 text-warning-500 animate-spin" />
+                    </div>
+                    <p class="text-3xl font-bold mt-2">
+                        {{ \App\Models\Task::where('task_status_id', 'in_progress')->count() }}</p>
+                    <div class="flex items-center text-sm text-gray-500 mt-2">
+                        <span>
+                            {{ \App\Models\Task::count() > 0
+                                ? round((\App\Models\Task::where('task_status_id', 'in_progress')->count() / \App\Models\Task::count()) * 100)
+                                : 0 }}%
+                            dari total
+                        </span>
+                    </div>
+                </div>
+            </x-filament::card>
+
+            <!-- Tugas Terlambat -->
+            <x-filament::card>
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-500">Cencel</h3>
+                        <x-heroicon-s-exclamation-triangle class="w-6 h-6 text-danger-500" />
+                    </div>
+                    <p class="text-3xl font-bold mt-2">
+                        {{ \App\Models\Task::where('task_status_id', 'cancelled')->count() }}</p>
                     <div class="flex items-center text-sm text-danger-500 mt-2">
-                        <x-heroicon-s-arrow-trending-down class="w-4 h-4 mr-1" />
-                        <span>5% dari bulan lalu</span>
+                        <x-heroicon-s-arrow-trending-up class="w-4 h-4 mr-1" />
+                        <span>{{ \App\Models\Task::where('task_status_id', 'cancelled')->count() }} total cancel</span>
                     </div>
                 </div>
             </x-filament::card>
@@ -43,61 +81,52 @@
 
         <!-- Dua Kolom Bawah -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Grafik Aktivitas Terbaru -->
+            <!-- Daftar Tugas Terbaru -->
             <x-filament::card>
                 <div class="p-6">
-                    <h2 class="text-lg font-medium text-gray-900 mb-4">Aktivitas Terbaru</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-medium text-gray-900">Task New</h2>
+                        <x-filament::button size="sm" tag="a"
+                            href="{{ route('filament.admin.resources.tasks.index') }}">
+                            Lihat Semua
+                        </x-filament::button>
+                    </div>
                     <div class="space-y-4">
-                        @foreach ([['user' => 'Andi', 'action' => 'Membuat pesanan baru #ORD-2024-001', 'time' => '10 menit lalu'], ['user' => 'Budi', 'action' => 'Memperbarui profil pengguna', 'time' => '25 menit lalu'], ['user' => 'Citra', 'action' => 'Mengupload dokumen pembayaran', 'time' => '1 jam lalu'], ['user' => 'Dewi', 'action' => 'Menyelesaikan tugas verifikasi', 'time' => '2 jam lalu']] as $activity)
-                            <div class="flex items-start">
-                                <div class="bg-primary-100 p-2 rounded-full mr-3">
-                                    <x-heroicon-s-user class="w-5 h-5 text-primary-600" />
-                                </div>
-                                <div>
-                                    <p class="font-medium">{{ $activity['user'] }} <span
-                                            class="font-normal">{{ $activity['action'] }}</span></p>
-                                    <p class="text-sm text-gray-500">{{ $activity['time'] }}</p>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <x-filament::button class="mt-4" size="sm" tag="a" href="">
-                        Lihat Semua Aktivitas
-                    </x-filament::button>
-                </div>
-            </x-filament::card>
+                        @foreach (\App\Models\Task::latest()->take(4)->get() as $task)
+                            <div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="text-sm text-gray-500">{{ $task->title }}</p>
+                                        <p class="font-medium">{{ $task->description }}</p>
+                                    </div>
 
-            <!-- Status Tugas -->
-            <x-filament::card>
-                <div class="p-6">
-                    <h2 class="text-lg font-medium text-gray-900 mb-4">Status Tugas</h2>
+                                    <div class="flex items-center text-sm"
+                                        style="color: {{ $task->severity->color ?? '#6B7280' }}">
+                                        <x-heroicon-s-flag class="w-4 h-4 mr-1" />
+                                        <span>{{ $task->severity->name ?? 'Tidak Diketahui' }}</span>
+                                    </div>
 
-                    <div class="mb-6">
-                        <h3 class="text-sm font-medium text-gray-500 mb-2">Progress Tugas</h3>
-                        <div class="flex items-center">
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
-                                <div class="bg-primary-600 h-2.5 rounded-full" style="width: 33%"></div>
-                            </div>
-                            <span class="text-sm font-medium">1/3 selesai</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3">
-                        @foreach ([['title' => 'Perbaiki Bug Sistem Pembayaran', 'status' => 'Selesai', 'color' => 'success'], ['title' => 'Desain Database Schema', 'status' => 'Dalam Proses', 'color' => 'warning'], ['title' => 'Implementasi Sistem Autentikasi', 'status' => 'Belum Dimulai', 'color' => 'danger']] as $task)
-                            <div class="flex items-center justify-between p-3 border rounded-lg">
-                                <div>
-                                    <p class="font-medium">{{ $task['title'] }}</p>
-                                    <p class="text-sm text-gray-500">Terakhir diperbarui:
-                                        {{ now()->subDays(rand(1, 5))->format('d/m/Y') }}</p>
                                 </div>
-                                <x-filament::badge :color="$task['color']">
-                                    {{ $task['status'] }}
-                                </x-filament::badge>
+                                <div class="flex items-center justify-between mt-3">
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <x-heroicon-s-user-circle class="w-4 h-4 mr-1" />
+                                        <span>{{ $task->assignee->name }}</span>
+                                    </div>
+
+                                    <div
+                                        class="flex items-center text-sm {{ $task->severity->color ?? 'text-gray-500' }}">
+                                        <x-heroicon-s-clock class="w-4 h-4 mr-1" />
+                                        <span>Batas:
+                                            {{ \Carbon\Carbon::parse($task->deadline)->diffForHumans() }}</span>
+                                    </div>
+                                </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
             </x-filament::card>
+
+
         </div>
     </div>
 </x-filament::page>

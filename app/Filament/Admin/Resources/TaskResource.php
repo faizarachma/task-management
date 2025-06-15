@@ -40,6 +40,15 @@ class TaskResource extends Resource
                             ->maxLength(65535)
                             ->columnSpanFull()
                             ->rows(5),
+
+                        Forms\Components\DatePicker::make('deadline')
+                            ->label('Deadline')
+                            ->required()
+                            ->native(false)
+                            ->minDate(now()), // Opsional: hanya bisa memilih tanggal mulai hari ini
+
+
+
                     ]),
 
                 Forms\Components\Section::make('Task Details')
@@ -105,6 +114,13 @@ class TaskResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Assignee')
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('deadline')
+                    ->label('Deadline')
+                    ->date('M d, Y')
+                    ->sortable()
+                    ->toggleable(),
+
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
