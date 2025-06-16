@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\CheckDeveloperRole;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -17,6 +16,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Developer\Pages\DashboardDev;
 
 class DeveloperPanelProvider extends PanelProvider
 {
@@ -25,8 +25,8 @@ class DeveloperPanelProvider extends PanelProvider
         return $panel
             ->id('developer')
             ->path('developer')
-            ->login() // Aktifkan halaman login
-            ->profile() // Aktifkan halaman profil
+            ->login()
+            // ->profile()
             ->colors([
                 'primary' => Color::Indigo,
                 'danger' => Color::Rose,
@@ -40,7 +40,7 @@ class DeveloperPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Developer/Pages'), for: 'App\\Filament\\Developer\\Pages')
             ->discoverWidgets(in: app_path('Filament/Developer/Widgets'), for: 'App\\Filament\\Developer\\Widgets')
             ->pages([
-                Pages\Dashboard::class,
+                \App\Filament\Developer\Pages\DashboardDev::class,
             ])
             ->navigationGroups([
                 NavigationGroup::make()
@@ -62,12 +62,11 @@ class DeveloperPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                \App\Http\Middleware\CheckRole::class.':developer', // Untuk developer panel
-
+                \App\Http\Middleware\CheckRole::class.':developer', // Middleware untuk cek role developer
             ])
-            ->authGuard('developer') // Gunakan guard khusus
-            ->passwordReset() // Aktifkan reset password
-            ->emailVerification() // Aktifkan verifikasi email
-            ->databaseNotifications(); // Aktifkan notifikasi database
+            ->authGuard('web') // Tetap gunakan guard web karena menggunakan tabel users
+            ->passwordReset()
+            ->emailVerification();
+            // ->databaseNotifications();
     }
 }

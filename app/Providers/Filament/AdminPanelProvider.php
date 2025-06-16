@@ -19,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -26,18 +27,18 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('')
             ->login()
-            ->profile() // Enable profile page
+            ->profile()
             ->colors([
                 'primary' => Color::Amber,
                 'danger' => Color::Rose,
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
-            ->font('Inter') // Set default font
-            ->brandName('Admin Panel') // Custom brand name
-            ->favicon(asset('images/favicon.ico')) // Custom favicon
+            ->font('Inter')
+            ->brandName('Admin Panel')
+            ->favicon(asset('images/favicon.ico'))
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
@@ -50,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-user-circle')
                     ->group('Account')
                     ->sort(1)
-                    ->visible(fn (): bool => auth()->check()), // Only show when authenticated
+                    ->visible(fn (): bool => auth()->check()),
             ])
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -68,10 +69,23 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\ValidateAdminAccount::class,
                 \App\Http\Middleware\CheckRole::class.':admin',
             ])
-            ->databaseNotifications() // Enable database notifications
-            ->passwordReset() // Enable password reset
-            ->emailVerification(); // Enable email verification
+            // ->databaseNotifications()
+            ->passwordReset()
+            ->emailVerification();
+    }
+
+    public function boot(): void
+    {
+        $this->app['events']->listen(\Illuminate\Auth\Events\Failed::class, function ($event) {
+            return redirect('/') // Redirect to root
+                ->withInput()
+                ->withErrors([
+                    'email' => 'Email atau password salah.',
+                    'password' => 'Email atau password salah.',
+                ]);
+        });
     }
 }
