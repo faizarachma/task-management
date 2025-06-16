@@ -20,7 +20,7 @@ class ProfileResource extends Resource
 
     protected static ?string $slug = 'profile';
 
-    // Supaya tidak otomatis muncul di sidebar
+
     public static function shouldRegisterNavigation(): bool
     {
         return false;
@@ -28,19 +28,19 @@ class ProfileResource extends Resource
 
     public static function getPages(): array
     {
-        // Route edit harus punya {record}
+
         return [
             'edit' => Pages\EditProfile::route('/edit/{record}'),
         ];
     }
 
-    // Batasi query hanya user yang login
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('id', auth()->id());
     }
 
-    // Override getUrl untuk 'index' diarahkan ke edit profile user login
+
     public static function getUrl(
         string $name = 'index',
         array $parameters = [],
@@ -55,7 +55,7 @@ class ProfileResource extends Resource
         return parent::getUrl($name, $parameters, $isAbsolute, $panel, $tenant);
     }
 
-    // Form fields untuk edit profile
+
     public static function form(Form $form): Form
     {
         return $form->schema([

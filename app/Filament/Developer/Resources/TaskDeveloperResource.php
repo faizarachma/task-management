@@ -17,7 +17,7 @@ class TaskDeveloperResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-check-circle';
 
-    // Filter query supaya hanya task developer yang login yang ditampilkan
+    
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

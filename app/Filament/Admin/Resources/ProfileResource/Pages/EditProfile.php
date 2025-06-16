@@ -10,7 +10,7 @@ class EditProfile extends EditRecord
 {
     protected static string $resource = ProfileResource::class;
 
-    // Pastikan akses public dan override method getRecord() untuk ambil user login
+
     public function getRecord(): Model
     {
         return auth()->user();
@@ -18,7 +18,7 @@ class EditProfile extends EditRecord
 
     protected function getRedirectUrl(): string
     {
-        // Setelah edit, redirect ke halaman edit profil user login juga
+
         return $this->getResource()::getUrl('edit', ['record' => auth()->id()]);
     }
 }
