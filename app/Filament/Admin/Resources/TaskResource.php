@@ -168,16 +168,16 @@ class TaskResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()
                         ->label('Delete Selected'),
                 ]),
-            ])
-
-            ->emptyStateHeading('No tasks found')
-            ->emptyStateDescription('Click "New Task" to create your first task')
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Create Task')
-                    ->modalWidth('xl')
-                    ->modal(),
             ]);
+
+            // ->emptyStateHeading('No tasks found')
+            // ->emptyStateDescription('Click "New Task" to create your first task')
+            // ->emptyStateActions([
+            //     Tables\Actions\CreateAction::make()
+            //         ->label('Create Task')
+            //         ->modalWidth('xl')
+            //         ->modal(),
+            // ]);
     }
 
     public static function getPages(): array

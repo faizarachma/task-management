@@ -4,30 +4,21 @@ namespace App\Filament\Admin\Resources\ProfileResource\Pages;
 
 use App\Filament\Admin\Resources\ProfileResource;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditProfile extends EditRecord
 {
     protected static string $resource = ProfileResource::class;
 
-    public function mount($record): void
+    // Pastikan akses public dan override method getRecord() untuk ambil user login
+    public function getRecord(): Model
     {
-        // Get the authenticated user's ID
-        $user = auth()->user();
-
-        // Ensure we're only editing the logged-in user's profile
-        if ($record != $user->id) {
-            abort(403, 'You can only edit your own profile');
-        }
-
-        // Set the record to the authenticated user
-        $this->record = $user;
-
-        // Call parent mount with the record ID
-        parent::mount($record);
+        return auth()->user();
     }
 
     protected function getRedirectUrl(): string
     {
+        // Setelah edit, redirect ke halaman edit profil user login juga
         return $this->getResource()::getUrl('edit', ['record' => auth()->id()]);
     }
 }

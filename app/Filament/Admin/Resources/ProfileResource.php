@@ -18,25 +18,29 @@ class ProfileResource extends Resource
     protected static ?string $navigationLabel = 'Profile';
     protected static ?string $navigationGroup = 'Account';
 
-    protected static ?string $slug = 'profile'; // Tambahkan ini untuk URL yang lebih bersih
+    protected static ?string $slug = 'profile';
 
+    // Supaya tidak otomatis muncul di sidebar
     public static function shouldRegisterNavigation(): bool
     {
-        return true;
+        return false;
     }
 
     public static function getPages(): array
     {
+        // Route edit harus punya {record}
         return [
-            'edit' => Pages\EditProfile::route('/{record}/edit'),
+            'edit' => Pages\EditProfile::route('/edit/{record}'),
         ];
     }
 
+    // Batasi query hanya user yang login
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('id', auth()->id());
     }
 
+    // Override getUrl untuk 'index' diarahkan ke edit profile user login
     public static function getUrl(
         string $name = 'index',
         array $parameters = [],
@@ -44,7 +48,6 @@ class ProfileResource extends Resource
         ?string $panel = null,
         ?\Illuminate\Database\Eloquent\Model $tenant = null
     ): string {
-        // Redirect index ke edit dengan ID user yang login
         if ($name === 'index') {
             return parent::getUrl('edit', ['record' => auth()->id()], $isAbsolute, $panel, $tenant);
         }
@@ -52,6 +55,7 @@ class ProfileResource extends Resource
         return parent::getUrl($name, $parameters, $isAbsolute, $panel, $tenant);
     }
 
+    // Form fields untuk edit profile
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -76,7 +80,6 @@ class ProfileResource extends Resource
                 ->dehydrated(fn ($state) => filled($state))
                 ->revealable()
                 ->nullable(),
-
         ]);
     }
 }
